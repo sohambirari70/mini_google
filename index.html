@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mini Google 1998 - First Year AI Lab</title>
+  <style>
+    /* ============================================================
+       RETRO 1998 GOOGLE STYLING WITH CLEAN MODERN READABILITY
+       ============================================================ */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f7f9fa;
+      color: #202124;
+      line-height: 1.5;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* --- HEADER & LOGO --- */
+    header {
+      text-align: center;
+      padding: 24px 10px 16px 10px;
+    }
+
+    .logo {
+      font-family: "Times New Roman", Times, Georgia, serif;
+      font-size: 54px;
+      font-weight: 700;
+      letter-spacing: -1px;
+      user-select: none;
+      display: inline-block;
+      margin-bottom: 4px;
+    }
+
+    /* Google's original colour scheme */
+    .g-blue   { color: #4285F4; }
+    .g-red    { color: #EA4335; }
+    .g-yellow { color: #FBBC05; }
+    .g-green  { color: #34A853; }
+
+    .tagline {
+      font-size: 14px;
+      color: #5f6368;
+      margin-bottom: 18px;
+    }
+
+    .tagline strong {
+      color: #202124;
+    }
+
+    /* --- SEARCH BOX & CONTROLS --- */
+    .search-section {
+      background: #ffffff;
+      border: 1px solid #dadce0;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      margin-bottom: 24px;
+    }
+
+    .search-bar-wrap {
+      display: flex;
+      gap: 10px;
+      max-width: 650px;
+      margin: 0 auto 14px auto;
+    }
+
+    #search-input {
+      flex: 1;
+      padding: 12px 18px;
+      font-size: 16px;
+      border: 2px solid #dfe1e5;
+      border-radius: 24px;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    #search-input:focus {
+      border-color: #4285F4;
+      box-shadow: 0 1px 6px rgba(66, 133, 244, 0.28);
+    }
+
+    .btn {
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px 20px;
+      border-radius: 20px;
+      border: 1px solid transparent;
+      transition: background 0.15s ease, transform 0.05s;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-search {
+      background-color: #f8f9fa;
+      color: #3c4043;
+      border-color: #dadce0;
+    }
+
+    .btn-search:hover {
+      background-color: #f1f3f4;
+      border-color: #c6c9ce;
+    }
+
+    /* Example Query Buttons */
+    .examples-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 13px;
+      color: #5f6368;
+    }
+
+    .example-btn {
+      background: #e8f0fe;
+      color: #1a73e8;
+      border: 1px solid #d2e3fc;
+      border-radius: 16px;
+      padding: 5px 12px;
+      font-size: 13px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.15s ease;
+    }
+
+    .example-btn:hover {
+      background: #d2e3fc;
+      border-color: #aecbfa;
+    }
+
+    /* Top Controls Bar */
+    .controls-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 0 4px 16px 4px;
+    }
+
+    .query-summary {
+      font-size: 15px;
+      color: #3c4043;
+    }
+
+    .btn-rerun {
+      background-color: #ffffff;
+      color: #1a73e8;
+      border: 1px solid #dadce0;
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+      transition: all 0.15s ease;
+    }
+
+    .btn-rerun:hover {
+      background-color: #f8fafd;
+      border-color: #4285F4;
+    }
+
+    /* --- RESULTS COLUMNS (SIDE BY SIDE) --- */
+    .columns-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    @media (max-width: 800px) {
+      .columns-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .ranking-column {
+      background: #ffffff;
+      border-radius: 10px;
+      border: 1px solid #e0e0e0;
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    .col-header {
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+      border-bottom: 2px solid #f1f3f4;
+    }
+
+    .col-title {
+      font-size: 18px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .col-desc {
+      font-size: 12px;
+      color: #70757a;
+      margin-top: 3px;
+    }
+
+    .badge-year {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+
+    .badge-1997 {
+      background: #fce8e6;
+      color: #c5221f;
+    }
+
+    .badge-1998 {
+      background: #e6f4ea;
+      color: #137333;
+    }
+
+    /* --- RESULT CARDS --- */
+    .results-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .card {
+      border: 1px solid #e8eaed;
+      border-radius: 8px;
+      padding: 12px 14px;
+      background: #ffffff;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      position: relative;
+    }
+
+    .card:hover {
+      border-color: #bdc1c6;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+
+    /* Top rank highlight */
+    .card.top-rank {
+      border-left: 4px solid #4285F4;
+      background: #fafcff;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+      gap: 8px;
+    }
+
+    .card-rank {
+      font-weight: 700;
+      font-size: 14px;
+      color: #202124;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .card-url {
+      font-size: 13px;
+      color: #006621; /* Classic Google URL green */
+      text-decoration: none;
+      word-break: break-all;
+      display: block;
+      margin-bottom: 6px;
+      font-family: Consolas, "Courier New", monospace;
+    }
+
+    .card-text {
+      font-size: 13px;
+      color: #3c4043;
+      line-height: 1.45;
+      margin-bottom: 10px;
+    }
+
+    /* Highlighting matched word */
+    mark.highlight {
+      background-color: #fff0a6;
+      color: #111;
+      font-weight: 700;
+      padding: 1px 3px;
+      border-radius: 2px;
+    }
+
+    /* Badges & Scores */
+    .scores-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .score-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    .badge-count {
+      background: #f1f3f4;
+      color: #3c4043;
+      border: 1px solid #dadce0;
+    }
+
+    .badge-surfer {
+      background: #e8f0fe;
+      color: #1967d2;
+      border: 1px solid #d2e3fc;
+    }
+
+    .badge-links {
+      background: #fef7e0;
+      color: #b06000;
+      border: 1px solid #feefc3;
+    }
+
+    .badge-spam-warning {
+      background: #fce8e6;
+      color: #c5221f;
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    /* --- EMPTY / NO MATCH STATE --- */
+    .empty-state {
+      background: #ffffff;
+      border: 2px dashed #dadce0;
+      border-radius: 12px;
+      padding: 40px 20px;
+      text-align: center;
+      margin: 20px auto;
+      max-width: 600px;
+    }
+
+    .empty-icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+
+    .empty-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #202124;
+      margin-bottom: 8px;
+    }
+
+    .empty-message {
+      font-size: 14px;
+      color: #5f6368;
+      line-height: 1.6;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      font-size: 12px;
+      color: #70757a;
+      margin-top: 36px;
+      padding: 16px;
+      border-top: 1px solid #e0e0e0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ============================================================
+       HEADER: RETRO MINI GOOGLE 1998 LOGO
+       ============================================================ -->
+  <header>
+    <div class="logo">
+      <span class="g-blue">M</span><span class="g-red">i</span><span class="g-yellow">n</span><span class="g-blue">i</span>
+      <span> </span>
+      <span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span>
+      <span> </span>
+      <span class="g-blue">1</span><span class="g-red">9</span><span class="g-yellow">9</span><span class="g-green">8</span><span class="g-red">!</span>
+    </div>
+    <div class="tagline">
+      First-Year AI Lab: <strong>1997 Keyword Frequency</strong> vs <strong>1998 PageRank Random Surfer</strong>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       SEARCH BAR & EXAMPLE BUTTONS
+       ============================================================ -->
+  <div class="search-section">
+    <div class="search-bar-wrap">
+      <input type="text" id="search-input" placeholder="Search the web (e.g. pizza, cricket, movie, exam)..." autocomplete="off" />
+      <button class="btn btn-search" id="search-btn">Search</button>
+    </div>
+    <div class="examples-wrap">
+      <span>Try an example query:</span>
+      <button class="example-btn" onclick="runSearchFor('pizza')">🍕 pizza</button>
+      <button class="example-btn" onclick="runSearchFor('cricket')">🏏 cricket</button>
+      <button class="example-btn" onclick="runSearchFor('movie')">🎬 movie</button>
+      <button class="example-btn" onclick="runSearchFor('exam')">📝 exam</button>
+    </div>
+  </div>
+
+  <!-- Top bar with active query & Re-run button -->
+  <div class="controls-bar" id="controls-bar" style="display: none;">
+    <div class="query-summary" id="query-summary"></div>
+    <button class="btn-rerun" id="rerun-btn" onclick="rerunSurferSimulation()">
+      <span>🔄</span> Run the surfer again (100,000 moves)
+    </button>
+  </div>
+
+  <!-- Container for side-by-side search results -->
+  <div id="results-area"></div>
+
+  <!-- Friendly footer note -->
+  <footer>
+    Mini Google 1998 &bull; Built with pure HTML, CSS and JavaScript &bull; Double-click to run offline anywhere
+  </footer>
+
+</div>
+
+<script>
+// ============================================================
+// SECTION 1: THE DATA
+// Each row represents one web page:
+// page: Unique integer identifier
+// url: Address of the web page
+// text: Content of the web page
+// links_to: Page numbers this page links to, separated by ";"
+// ============================================================
+const PAGES_DATA = [
+  {
+    page: 1,
+    url: "http://www.joespizzanyc.com",
+    text: "Welcome to Joe's Pizza in Greenwich Village. We bake authentic New York pizza with handmade dough, crushed tomato sauce, and fresh mozzarella cheese. Voted best pizza in the city.",
+    links_to: "3;5"
+  },
+  {
+    page: 2,
+    url: "http://www.super-cheap-pizza-deals.com",
+    text: "Pizza pizza pizza pizza pizza! Cheap pizza delivery, hot pizza, fast pizza, best pizza slices, pepperoni pizza, cheese pizza, order pizza now for ultimate pizza taste!",
+    links_to: ""
+  },
+  {
+    page: 3,
+    url: "http://www.nycfoodguide.org",
+    text: "The definitive New York food guide. For classic pizza, visit Joe's Pizza on Carmine Street. Also explore our movie theater reviews and Broadway show listings.",
+    links_to: "1;8"
+  },
+  {
+    page: 4,
+    url: "http://www.campus-newspaper.edu",
+    text: "Campus weekly report: Students grab a slice of pizza before heading to the final exam. The university cricket club advances to the regional championships.",
+    links_to: "1;6;10"
+  },
+  {
+    page: 5,
+    url: "http://www.city-portal-directory.com",
+    text: "City directory: Top dining spots including authentic pizza, entertainment listings for every movie premiere, cricket league scores, and university exam dates.",
+    links_to: "1;3;6;8;10"
+  },
+  {
+    page: 6,
+    url: "http://www.cricinfo-world.org",
+    text: "Global cricket news and live cricket match coverage. Ball-by-ball commentary, international test cricket rankings, and upcoming cricket world cup schedules.",
+    links_to: "7;14"
+  },
+  {
+    page: 7,
+    url: "http://www.lords-ground.co.uk",
+    text: "Lord's Cricket Ground in London, known worldwide as the home of cricket. Book your historic stadium tour and visit the cricket museum.",
+    links_to: "6;14"
+  },
+  {
+    page: 8,
+    url: "http://www.cinema-database.org",
+    text: "Internet movie database: Explore movie cast lists, director filmographies, movie reviews, and box office rankings for every classic movie release.",
+    links_to: "9;15"
+  },
+  {
+    page: 9,
+    url: "http://www.sundance-festival.org",
+    text: "Sundance Film Festival celebrates independent movie directors and screenwriters. Screenings include documentary features and short movie programs.",
+    links_to: "8;15"
+  },
+  {
+    page: 10,
+    url: "http://www.university-academics.edu",
+    text: "University academic portal. Check your midterm exam timetable, final exam rules, exam study guidelines, and grade appeal procedures.",
+    links_to: "4;11"
+  },
+  {
+    page: 11,
+    url: "http://www.library-study-center.edu",
+    text: "University library: Extended 24-hour study spaces open during final exam week. Book a private group study room to prepare for any difficult exam.",
+    links_to: "4;10"
+  },
+  {
+    page: 12,
+    url: "http://www.free-movie-download-hd.biz",
+    text: "Movie movie movie movie watch movie download movie free movie streaming movie theater blockbuster cinema movie movie clips!",
+    links_to: ""
+  },
+  {
+    page: 13,
+    url: "http://www.cricket-cricket-super-fan.net",
+    text: "Cricket cricket cricket cricket cricket live cricket stream cricket scores cricket bat cricket ball play cricket free cricket fun!",
+    links_to: ""
+  },
+  {
+    page: 14,
+    url: "http://www.bbc-sports-corner.com",
+    text: "International sports bulletin: Live cricket tournament summaries, athlete interviews, and world cricket championship qualification tables.",
+    links_to: "6;7"
+  },
+  {
+    page: 15,
+    url: "http://www.hollywood-chronicle.com",
+    text: "Hollywood entertainment news: Exclusive movie trailer releases, red carpet movie star interviews, and weekend movie box office recaps.",
+    links_to: "8;9"
+  },
+  {
+    page: 16,
+    url: "http://www.pass-any-exam-easy.biz",
+    text: "Exam exam exam pass your exam test exam guaranteed exam questions exam study cheat sheet exam practice exam test pass!",
+    links_to: ""
+  }
+];
+
+// Helper: parse the semicolon-separated string of page numbers
+function parseLinks(linksToStr) {
+  if (!linksToStr || typeof linksToStr !== "string") return [];
+  return linksToStr
+    .split(";")
+    .map(s => parseInt(s.trim(), 10))
+    .filter(num => !isNaN(num));
+}
+
+// Helper: Count how many other pages link to each page ("Links in: N")
+function computeIncomingLinks() {
+  PAGES_DATA.forEach(targetPage => {
+    let count = 0;
+    PAGES_DATA.forEach(sourcePage => {
+      const outLinks = parseLinks(sourcePage.links_to);
+      if (outLinks.includes(targetPage.page)) {
+        count++;
+      }
+    });
+    targetPage.inLinks = count;
+  });
+}
+
+// ============================================================
+// SECTION 2: RANKING 1 - "Old way (1997)"
+// Count whole-word occurrences of searchWord in text, ignoring case.
+// ============================================================
+function countWordOccurrences(text, searchWord) {
+  if (!searchWord || !text) return 0;
+  // Escape any special regex characters
+  const escapedWord = searchWord.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  // Whole-word regex with case-insensitive flag
+  const regex = new RegExp('\\b' + escapedWord + '\\b', 'gi');
+  const matches = text.match(regex);
+  return matches ? matches.length : 0;
+}
+
+// ============================================================
+// SECTION 3: RANKING 2 - "Surfer way (1998)"
+// Monte Carlo Random Surfer algorithm (PageRank simulation):
+// 1. Start on a random page.
+// 2. Make 100,000 moves:
+//    - 15% of the time, jump to any page picked at random (teleport).
+//    - Otherwise, click one of current page's links picked at random.
+// 3. Count how many times each page is visited.
+// 4. Surfer score = visits / 100,000 as percentage with 1 decimal place.
+// ============================================================
+function runRandomSurfer() {
+  const TOTAL_MOVES = 100000;
+  const visits = {};
+  
+  // Initialize visit counter for all pages to 0
+  PAGES_DATA.forEach(p => {
+    visits[p.page] = 0;
+  });
+
+  // Step 1: Start on a random page
+  let currentIdx = Math.floor(Math.random() * PAGES_DATA.length);
+  let currentPage = PAGES_DATA[currentIdx];
+
+  // Step 2: Make 100,000 moves
+  for (let move = 0; move < TOTAL_MOVES; move++) {
+    const links = parseLinks(currentPage.links_to);
+    const getsBored = Math.random() < 0.15;
+
+    // If 15% random teleport, OR if current page has no links (dead end)
+    if (getsBored || links.length === 0) {
+      currentIdx = Math.floor(Math.random() * PAGES_DATA.length);
+      currentPage = PAGES_DATA[currentIdx];
+    } else {
+      // Pick one link from current page at random
+      const targetPageNum = links[Math.floor(Math.random() * links.length)];
+      const targetPage = PAGES_DATA.find(p => p.page === targetPageNum);
+      if (targetPage) {
+        currentPage = targetPage;
+      } else {
+        // Fallback to random page if link is invalid
+        currentIdx = Math.floor(Math.random() * PAGES_DATA.length);
+        currentPage = PAGES_DATA[currentIdx];
+      }
+    }
+
+    // Step 3: Count visit to the page
+    visits[currentPage.page] = (visits[currentPage.page] || 0) + 1;
+  }
+
+  // Step 4: Surfer score = visits / 100,000 as percentage with 1 decimal place
+  PAGES_DATA.forEach(p => {
+    const v = visits[p.page] || 0;
+    p.visits = v;
+    p.surferScoreNum = (v / TOTAL_MOVES) * 100;
+    p.surferScore = p.surferScoreNum.toFixed(1) + "%";
+  });
+}
+
+// ============================================================
+// SECTION 4: SEARCH & UI RENDERING
+// ============================================================
+
+// Helper: Highlight whole-word matches in text while keeping original casing
+function highlightText(text, searchWord) {
+  if (!searchWord) return text;
+  const escapedWord = searchWord.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const regex = new RegExp('(\\b' + escapedWord + '\\b)', 'gi');
+  return text.replace(regex, '<mark class="highlight">$1</mark>');
+}
+
+// Main search execution function
+function performSearch() {
+  const inputEl = document.getElementById("search-input");
+  const rawQuery = inputEl.value.trim();
+  
+  if (!rawQuery) {
+    document.getElementById("controls-bar").style.display = "none";
+    document.getElementById("results-area").innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">🔍</div>
+        <div class="empty-title">Ready to search!</div>
+        <div class="empty-message">Type a search word above or click one of the example buttons (pizza, cricket, movie, exam) to compare rankings.</div>
+      </div>
+    `;
+    return;
+  }
+
+  // Use the single whole word (first word if multiple entered)
+  const searchWord = rawQuery.split(/\s+/)[0];
+
+  // 1. Filter: show only pages whose text contains the search word
+  const matchedPages = [];
+  PAGES_DATA.forEach(p => {
+    const count = countWordOccurrences(p.text, searchWord);
+    if (count > 0) {
+      matchedPages.push({
+        ...p,
+        wordCount: count
+      });
+    }
+  });
+
+  const controlsBar = document.getElementById("controls-bar");
+  const summaryEl = document.getElementById("query-summary");
+  const resultsArea = document.getElementById("results-area");
+
+  // If no pages match: show a friendly, funny 1998-themed message
+  if (matchedPages.length === 0) {
+    controlsBar.style.display = "none";
+    resultsArea.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">🦖</div>
+        <div class="empty-title">Oops! Nothing found for "${escapeHtml(searchWord)}"</div>
+        <div class="empty-message">
+          Our 1998 web crawlers dialed up via 56k modem, combed through all 26 million pages on the World Wide Web, and found <strong>0 matches</strong>.<br><br>
+          <em>Did someone trip over the phone cord?</em> Try one of our lab examples:
+          <button class="example-btn" onclick="runSearchFor('pizza')">pizza</button>
+          <button class="example-btn" onclick="runSearchFor('cricket')">cricket</button>
+          <button class="example-btn" onclick="runSearchFor('movie')">movie</button>
+          <button class="example-btn" onclick="runSearchFor('exam')">exam</button>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  // Show summary and re-run button
+  controlsBar.style.display = "flex";
+  summaryEl.innerHTML = `Showing <strong>${matchedPages.length}</strong> matching page${matchedPages.length === 1 ? '' : 's'} for <strong>"${escapeHtml(searchWord)}"</strong>:`;
+
+  // --- SORT FOR COLUMN 1: "Old way (1997)" ---
+  // Highest word count first
+  const oldWayResults = [...matchedPages].sort((a, b) => {
+    if (b.wordCount !== a.wordCount) {
+      return b.wordCount - a.wordCount;
+    }
+    return a.page - b.page;
+  });
+
+  // --- SORT FOR COLUMN 2: "Surfer way (1998)" ---
+  // Highest surfer score first
+  const surferWayResults = [...matchedPages].sort((a, b) => {
+    if (b.surferScoreNum !== a.surferScoreNum) {
+      return b.surferScoreNum - a.surferScoreNum;
+    }
+    return b.inLinks - a.inLinks;
+  });
+
+  // Render both columns side by side
+  resultsArea.innerHTML = `
+    <div class="columns-container">
+      
+      <!-- LEFT COLUMN: Old way (1997) -->
+      <div class="ranking-column">
+        <div class="col-header">
+          <div class="col-title">
+            <span class="badge-year badge-1997">1997</span>
+            <span>Old way (Word Count)</span>
+          </div>
+          <div class="col-desc">Ranked by how many times "${escapeHtml(searchWord)}" appears in the text. Vulnerable to spam!</div>
+        </div>
+        <div class="results-list">
+          ${oldWayResults.map((item, index) => renderOldWayCard(item, index + 1, searchWord)).join("")}
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: Surfer way (1998) -->
+      <div class="ranking-column">
+        <div class="col-header">
+          <div class="col-title">
+            <span class="badge-year badge-1998">1998</span>
+            <span>Surfer way (Random Surfer)</span>
+          </div>
+          <div class="col-desc">Ranked by probability of a random surfer landing on the page. Driven by link authority!</div>
+        </div>
+        <div class="results-list">
+          ${surferWayResults.map((item, index) => renderSurferCard(item, index + 1, searchWord)).join("")}
+        </div>
+      </div>
+
+    </div>
+  `;
+}
+
+// Render Card for "Old way (1997)"
+function renderOldWayCard(item, rank, searchWord) {
+  const isTop = rank === 1;
+  const isSpammy = item.wordCount >= 10;
+  return `
+    <div class="card ${isTop ? 'top-rank' : ''}">
+      <div class="card-header">
+        <span class="card-rank">${rank === 1 ? '🏆' : ''} Rank #${rank}</span>
+        ${isSpammy ? '<span class="badge-spam-warning">⚠️ Keyword Stuffed</span>' : ''}
+      </div>
+      <div class="card-url">${escapeHtml(item.url)}</div>
+      <div class="card-text">${highlightText(escapeHtml(item.text), searchWord)}</div>
+      <div class="scores-row">
+        <span class="score-badge badge-count">
+          🔤 Score: <strong>${item.wordCount}</strong> word${item.wordCount === 1 ? '' : 's'}
+        </span>
+      </div>
+    </div>
+  `;
+}
+
+// Render Card for "Surfer way (1998)"
+function renderSurferCard(item, rank, searchWord) {
+  const isTop = rank === 1;
+  return `
+    <div class="card ${isTop ? 'top-rank' : ''}">
+      <div class="card-header">
+        <span class="card-rank">${rank === 1 ? '🏆' : ''} Rank #${rank}</span>
+      </div>
+      <div class="card-url">${escapeHtml(item.url)}</div>
+      <div class="card-text">${highlightText(escapeHtml(item.text), searchWord)}</div>
+      <div class="scores-row">
+        <span class="score-badge badge-surfer">
+          🏄 Surfer Score: <strong>${item.surferScore}</strong>
+        </span>
+        <span class="score-badge badge-links">
+          🔗 Links in: <strong>${item.inLinks}</strong>
+        </span>
+      </div>
+    </div>
+  `;
+}
+
+// Helper: Escape HTML strings to prevent formatting issues
+function escapeHtml(str) {
+  if (!str) return "";
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+// Helper: Run a search for one of the example keywords
+function runSearchFor(keyword) {
+  const inputEl = document.getElementById("search-input");
+  inputEl.value = keyword;
+  performSearch();
+}
+
+// Button handler: "Run the surfer again"
+function rerunSurferSimulation() {
+  const btn = document.getElementById("rerun-btn");
+  const originalText = btn.innerHTML;
+  btn.innerHTML = "<span>⏳</span> Running 100,000 moves...";
+  btn.disabled = true;
+
+  // Small timeout so UI can show the active state
+  setTimeout(() => {
+    runRandomSurfer();
+    performSearch();
+    btn.innerHTML = "<span>✅</span> Surfer updated!";
+    setTimeout(() => {
+      btn.innerHTML = originalText;
+      btn.disabled = false;
+    }, 800);
+  }, 30);
+}
+
+// ============================================================
+// SECTION 5: INITIALIZATION
+// Runs once when the page opens
+// ============================================================
+window.addEventListener("DOMContentLoaded", () => {
+  // 1. Calculate incoming links for each page
+  computeIncomingLinks();
+
+  // 2. Run the random surfer once (100,000 moves)
+  runRandomSurfer();
+
+  // 3. Connect search button click
+  document.getElementById("search-btn").addEventListener("click", performSearch);
+
+  // 4. Connect Enter key in the search input
+  document.getElementById("search-input").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      performSearch();
+    }
+  });
+
+  // 5. Default view: automatically search for "pizza" so students see the comparison immediately
+  runSearchFor("pizza");
+});
+</script>
+
+</body>
+</html>
